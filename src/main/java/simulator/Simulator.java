@@ -156,7 +156,8 @@ public class Simulator {
 //        context.setF(input.nextDouble());
         System.out.print("Please specify the game type:  1) Adversarial   2)  semi-cooperative  3) fully cooperative  ");
         setGameType(input);
-
+        System.out.println("Please enter a value for cutoff:");
+        context.setCutoff(input.nextInt());
         initializeAgent(input, 0);
         initializeAgent(input, 1);
 

@@ -25,6 +25,9 @@ public class SimulatorContext {
     @Getter @Setter
     private GameType gameType;
 
+    @Getter @Setter
+    private int cutoff;
+
     public SimulatorContext() {
     }
 
