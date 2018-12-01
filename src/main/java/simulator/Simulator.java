@@ -3,8 +3,10 @@ package simulator;
 import agent.Agent;
 import agent.AgentAction;
 import agent.AgentFactory;
+import agent.gameAgent.GameAgentFactory;
 import agent.search.SearchAgent;
 import config.HurricaneNode;
+import entities.GameType;
 import lombok.Getter;
 import lombok.Setter;
 import org.graphstream.ui.view.Viewer;
@@ -150,19 +152,35 @@ public class Simulator {
         System.out.println("Welcome to Agent simulator");
         System.out.println("Please enter a value for K constant:");
         context.setK(input.nextDouble());
-        System.out.println("Please enter a value for f:");
-        context.setF(input.nextDouble());
-        System.out.print("Please specify the number of agents: ");
-        int agentNumber = input.nextInt();
-        for (int i = 0; i < agentNumber; i++){
-            initializeAgent(input, i);
+//        System.out.println("Please enter a value for f:"); //TODO remove?
+//        context.setF(input.nextDouble());
+        System.out.print("Please specify the game type:  1) Adversarial   2)  semi-cooperative  3) fully cooperative  ");
+        setGameType(input);
+
+        initializeAgent(input, 0);
+        initializeAgent(input, 1);
+
+    }
+
+    private void setGameType(Scanner input) {
+        switch (input.nextInt()){
+            case 1:
+                context.setGameType(GameType.ADVERSARIAL);
+                break;
+            case 2:
+                context.setGameType(GameType.SEMI_COOPERATIVE);
+                break;
+            case 3:
+                context.setGameType(GameType.FULLY_COOPERATIVE);
+                break;
+            default:
+                System.out.print("error");
         }
     }
 
     private void initializeAgent(Scanner input, int i) {
         System.out.println("Agent no. " + (i+1) + ":");
-        System.out.println("Please specify agent Type: 1) Humam  2) Greedy  3) Vandal 4) " +
-                "Greedy search agent 5) A* search agent  6) Real time search agent");
+        System.out.println("Please specify agent Type: 1) Humam  2) game tree search agent");
         int type = input.nextInt();
         System.out.println("Please specify Agent " + (i+1) +
                 " initial position (number in between 1 to " + context.getGraph().getNodeCount() +"):");

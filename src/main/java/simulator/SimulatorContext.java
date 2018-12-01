@@ -1,6 +1,7 @@
 package simulator;
 
 import config.HurricaneGraph;
+import entities.GameType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,9 @@ public class SimulatorContext {
 
     @Getter @Setter
     private double f;
+
+    @Getter @Setter
+    private GameType gameType;
 
     public SimulatorContext() {
     }
