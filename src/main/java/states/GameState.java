@@ -23,6 +23,7 @@ public class GameState extends State {
 
     public GameState(SimulatorContext simulatorContext, HurricaneNode currNode, State prev, int people, double costSoFar, double savedPeople, HurricaneNode otherCurrNode, double otherSavedPeople, int otherPeople) {
         super(simulatorContext, currNode, prev, people, costSoFar);
+        this.time = simulatorContext.getTime();
         this.mineSavedPeople = savedPeople;
         this.otherCurrNode = otherCurrNode;
         this.otherSavedPeople = otherSavedPeople;

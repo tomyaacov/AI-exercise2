@@ -20,7 +20,12 @@ public class AdversrialAgent extends GameAgent {
 
     @Override
     public AgentAction doNextAction(double currTime) {
-        GameState gameState = null;
+        int otherId = (getId()+1)%2;
+        GameState gameState = new GameState(getContext(), getCurrNode(), null, getPeople(), 0,
+                                            getContext().getAgentStates().get(getId()).getSavedPeople(),
+                                            getContext().getAgentStates().get(otherId).getPosition(),
+                                            getContext().getAgentStates().get(otherId).getSavedPeople(),
+                                            getContext().getAgentStates().get(otherId).getPeopleInCar());
         return alphaBetaDecision(gameState);
     }
 
@@ -37,14 +42,14 @@ public class AdversrialAgent extends GameAgent {
         if (timeToCutoff == 0){
             return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState));
         }
-        double v = Double.MIN_VALUE;
+        double v = -Double.MAX_VALUE;
         GameState maxState = null;
         List<GameState> expandState = expandState(gameState, true);
         for(GameState s: expandState){
             GameSearchOutput curr = minValue(s,alpha,beta,timeToCutoff-1);
             if(v < curr.getScore()){
                 v = curr.getScore();
-                maxState = curr.getGameState();
+                maxState = s;
             }
             if (v >= beta){
                 return  new GameSearchOutput(maxState, v);
@@ -68,7 +73,7 @@ public class AdversrialAgent extends GameAgent {
             GameSearchOutput curr = maxValue(s,alpha,beta,timeToCutoff-1);
             if (v > curr.getScore()){
                 v = curr.getScore();
-                minState = curr.getGameState();
+                minState = s;
             }
             if (v <= alpha){
                 return new GameSearchOutput(minState, v);
@@ -88,7 +93,7 @@ public class AdversrialAgent extends GameAgent {
         while (it.hasNext()) {
             Edge currentEdge = it.next();
             if (!HurricaneGraph.isEdgeBlock(currentEdge)) {
-                HurricaneNode node = currentEdge.getOpposite(gameState.getCurrNode());
+                HurricaneNode node = currentEdge.getOpposite(expandFrom);
                 expandState.add(constructNewState(gameState, currentEdge, node, isA));
             }
         }

@@ -36,6 +36,7 @@ public class SimulatorContext {
     private List<AgentState> agentStates;
 
     public SimulatorContext() {
+        this.agentStates = new ArrayList<>(2);
     }
 
     public SimulatorContext(SimulatorContext cloneContext){
