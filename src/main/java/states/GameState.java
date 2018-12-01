@@ -10,26 +10,44 @@ import java.util.Map;
 public class GameState extends State {
 
     @Getter @Setter
+    private double savedPeople;
+
+    @Getter @Setter
     private HurricaneNode otherCurrNode;
 
     @Getter @Setter
-    private double otherCostSoFar;
+    private double otherSavedPeople;
 
     @Getter @Setter
     private int otherPeople;
 
-
-    public GameState(State prev, HurricaneNode currNode, Map<String, Integer> peopleInside, double time, int people, double costSoFar, HurricaneNode otherCurrNode, double otherCostSoFar, int otherPeople) {
-        super(prev, currNode, peopleInside, time, people, costSoFar);
-        this.otherCurrNode = otherCurrNode;
-        this.otherCostSoFar = otherCostSoFar;
-        this.otherPeople = otherPeople;
-    }
-
-    public GameState(SimulatorContext simulatorContext, HurricaneNode currNode, State prev, int people, double costSoFar, HurricaneNode otherCurrNode, double otherCostSoFar, int otherPeople) {
+    public GameState(SimulatorContext simulatorContext, HurricaneNode currNode, State prev, int people, double costSoFar, double savedPeople, HurricaneNode otherCurrNode, double otherSavedPeople, int otherPeople) {
         super(simulatorContext, currNode, prev, people, costSoFar);
+        this.savedPeople = savedPeople;
         this.otherCurrNode = otherCurrNode;
-        this.otherCostSoFar = otherCostSoFar;
+        this.otherSavedPeople = otherSavedPeople;
         this.otherPeople = otherPeople;
     }
+
+    public GameState(State prev, HurricaneNode currNode, Map<String, Integer> peopleInside, double time, int people, double costSoFar, double savedPeople, HurricaneNode otherCurrNode, double otherSavedPeople, int otherPeople) {
+        super(prev, currNode, peopleInside, time, people, costSoFar);
+        this.savedPeople = savedPeople;
+        this.otherCurrNode = otherCurrNode;
+        this.otherSavedPeople = otherSavedPeople;
+        this.otherPeople = otherPeople;
+    }
+
+    public GameState(GameState gameState, double newTime){
+        this.prev = gameState;
+        this.currNode = gameState.getCurrNode();
+        this.peopleInNodes = gameState.getPeopleInNodes();
+        this.time = newTime;
+        this.people = gameState.getPeople();
+        this.costSoFar = gameState.getCostSoFar();
+        this.otherCurrNode = gameState.getOtherCurrNode();
+        this.otherSavedPeople = gameState.getOtherSavedPeople();
+        this.otherPeople = gameState.getOtherPeople();
+    }
+
+
 }

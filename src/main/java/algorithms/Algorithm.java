@@ -170,15 +170,15 @@ public class Algorithm {
                                     new HashMap<>(gameState.getPeopleInNodes()),
                                     gameState.getTime(),
                                     gameState.getPeople(),
-                                    gameState.getCostSoFar());
+                                    gameState.getSavedPeople());
         State stateB = new State(gameState.getPrev(),
                                     gameState.getOtherCurrNode(),
                                     new HashMap<>(gameState.getPeopleInNodes()),
                                     gameState.getTime(),
                                     gameState.getOtherPeople(),
-                                    gameState.getOtherCostSoFar());
+                                    gameState.getOtherSavedPeople());
 
-        return (stateA.getCostSoFar() + heuristicFunction(stateA)/2) - (stateB.getCostSoFar() + heuristicFunction(stateB)/2);
+        return (gameState.getSavedPeople() + heuristicFunction(stateA)/2) - (gameState.getOtherSavedPeople() + heuristicFunction(stateB)/2);
     }
 
     public static void main(String[] args) throws Exception{

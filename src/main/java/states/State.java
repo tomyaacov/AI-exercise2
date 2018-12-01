@@ -13,23 +13,25 @@ import java.util.Map;
 public class State implements Comparable{
 
     @Getter @Setter
-    private State prev;
+    protected State prev;
 
     @Getter @Setter
-    private HurricaneNode currNode;
+    protected HurricaneNode currNode;
 
     @Getter @Setter
-    private Map<String, Integer> peopleInNodes;
+    protected Map<String, Integer> peopleInNodes;
 
     @Getter @Setter
-    private double time;
+    protected double time;
 
     @Getter @Setter
-    private int people;
+    protected int people;
 
     @Getter @Setter
-    private double costSoFar;
+    protected double costSoFar;
 
+    public State() {
+    }
 
     public State(State prev, HurricaneNode currNode, Map<String, Integer> peopleInside, double time, int people, double costSoFar) {
         this.prev = prev;
