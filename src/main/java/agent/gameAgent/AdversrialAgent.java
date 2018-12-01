@@ -94,7 +94,7 @@ public class AdversrialAgent extends GameAgent {
         expandState.add(expandNoOp(gameState));
         return expandState;
     }
-    
+
 
 
 }

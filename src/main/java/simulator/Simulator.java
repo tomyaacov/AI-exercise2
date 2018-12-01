@@ -60,7 +60,7 @@ public class Simulator {
             context.setTime(context.getTime() + action.getTime());
             agent.doActionInNode();
             setAgentState(i, agent, context.getTime());
-            //PressToSeeNextMove("press to continue");
+            PressToSeeNextMove("press to continue");
             i = updateI(i);
         }
         if (isGoalAchieved()){
