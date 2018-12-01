@@ -27,7 +27,7 @@ public class Simulator {
     private List<Agent> agents;
 
     @Getter @Setter
-    private AgentFactory agentFactory;
+    private GameAgentFactory agentFactory;
 
     @Getter @Setter
     private Parser parser;
@@ -147,7 +147,7 @@ public class Simulator {
         parser = new Parser();
         context = initializeGraph();
         context.setTime(0);
-        agentFactory = new AgentFactory(context);
+        agentFactory = new GameAgentFactory(context);
 
         System.out.println("Welcome to Agent simulator");
         System.out.println("Please enter a value for K constant:");

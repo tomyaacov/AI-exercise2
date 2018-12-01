@@ -20,7 +20,8 @@ public class AdversrialAgent extends GameAgent {
 
     @Override
     public AgentAction doNextAction(double currTime) {
-        return null;
+        GameState gameState = null;
+        return alphaBetaDecision(gameState);
     }
 
     private AgentAction alphaBetaDecision(GameState gameState){
