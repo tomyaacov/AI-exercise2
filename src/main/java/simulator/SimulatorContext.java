@@ -4,6 +4,10 @@ import config.HurricaneGraph;
 import entities.GameType;
 import lombok.Getter;
 import lombok.Setter;
+import states.AgentState;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SimulatorContext {
 
@@ -28,6 +32,9 @@ public class SimulatorContext {
     @Getter @Setter
     private int cutoff;
 
+    @Getter @Setter
+    private List<AgentState> agentStates;
+
     public SimulatorContext() {
     }
 
@@ -36,6 +43,7 @@ public class SimulatorContext {
         this.deadline = cloneContext.getDeadline();
         this.k = cloneContext.getK();
         this.time = cloneContext.getTime();
+        this.agentStates = new ArrayList<>(2);
     }
 
 

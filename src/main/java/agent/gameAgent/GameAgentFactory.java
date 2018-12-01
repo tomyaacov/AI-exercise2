@@ -11,12 +11,12 @@ public class GameAgentFactory {
     public GameAgentFactory(SimulatorContext context){
         this.context = context;
     }
-    public Agent getAgent(int agentType) {
+    public Agent getAgent(int agentType, int id) {
 
         switch (agentType) {
 
             case 1:
-                return new HumanAgent(context);
+                return new GameHumanAgent(context);
             case 2:
                 return new AdversrialAgent(context);
             default:

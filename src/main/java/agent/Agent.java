@@ -17,8 +17,15 @@ public abstract class Agent {
     @Getter @Setter
     protected SimulatorContext context;
 
+    @Getter @Setter
+    private int id;
+
+    private static int count = 0;
+
     public Agent(SimulatorContext context) {
         this.context = context;
+        this.id = count;
+        count++;
     }
 
     /**

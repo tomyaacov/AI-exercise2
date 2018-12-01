@@ -11,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.graphstream.ui.view.Viewer;
 import parser.Parser;
+import states.AgentState;
 
 import java.io.File;
 import java.io.IOException;
@@ -186,8 +187,10 @@ public class Simulator {
         System.out.println("Please specify Agent " + (i+1) +
                 " initial position (number in between 1 to " + context.getGraph().getNodeCount() +"):");
         int position = input.nextInt();
-        Agent agent = agentFactory.getAgent(type);
+        Agent agent = agentFactory.getAgent(type,i);
         agent.setCurrNode(context.getGraph().getNode(String.valueOf(position)));
+        context.getAgentStates().add(new AgentState(0));
+        context.getAgentStates().get(i).setPosition(context.getGraph().getNode(String.valueOf(position)));
         agents.add(agent);
     }
 

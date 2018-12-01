@@ -2,6 +2,8 @@ package agent.gameAgent;
 
 import agent.Agent;
 import config.HurricaneNode;
+import lombok.Getter;
+import lombok.Setter;
 import org.graphstream.graph.Edge;
 import simulator.SimulatorContext;
 import states.GameState;
@@ -10,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class GameAgent extends Agent {
+
     public GameAgent(SimulatorContext context) {
         super(context);
     }
