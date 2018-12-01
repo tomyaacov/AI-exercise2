@@ -48,7 +48,7 @@ public abstract class GameAgent extends Agent {
                     node,
                     peopleMap,
                     s.getTime() + calculateTraverseSearchOperation(currentEdge, s.getPeople()),
-                    node.isShelter() ? 0 : s.getPeople() + node.getPeople(),
+                    node.isShelter() ? 0 : s.getPeople() + s.getPeopleInNodes().get(node.getId()),
                     s.getCostSoFar(),
                     node.isShelter() ? s.getMineSavedPeople() + s.getPeople() : s.getMineSavedPeople(),
                     s.getOtherCurrNode(),
@@ -73,7 +73,7 @@ public abstract class GameAgent extends Agent {
                     s.getMineSavedPeople(),
                     node,
                     node.isShelter() ? s.getOtherSavedPeople() + s.getOtherPeople() : s.getOtherSavedPeople(),
-                    node.isShelter() ? 0 : s.getOtherPeople() + node.getPeople());
+                    node.isShelter() ? 0 : s.getOtherPeople() + s.getPeopleInNodes().get(node.getId()));
         }
     }
 
