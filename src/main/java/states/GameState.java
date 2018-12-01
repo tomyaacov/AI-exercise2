@@ -10,7 +10,7 @@ import java.util.Map;
 public class GameState extends State {
 
     @Getter @Setter
-    private double savedPeople;
+    private double mineSavedPeople;
 
     @Getter @Setter
     private HurricaneNode otherCurrNode;
@@ -23,15 +23,24 @@ public class GameState extends State {
 
     public GameState(SimulatorContext simulatorContext, HurricaneNode currNode, State prev, int people, double costSoFar, double savedPeople, HurricaneNode otherCurrNode, double otherSavedPeople, int otherPeople) {
         super(simulatorContext, currNode, prev, people, costSoFar);
-        this.savedPeople = savedPeople;
+        this.mineSavedPeople = savedPeople;
         this.otherCurrNode = otherCurrNode;
         this.otherSavedPeople = otherSavedPeople;
         this.otherPeople = otherPeople;
     }
 
-    public GameState(State prev, HurricaneNode currNode, Map<String, Integer> peopleInside, double time, int people, double costSoFar, double savedPeople, HurricaneNode otherCurrNode, double otherSavedPeople, int otherPeople) {
+    public GameState(State prev,
+                     HurricaneNode currNode,
+                     Map<String, Integer> peopleInside,
+                     double time,
+                     int people,
+                     double costSoFar,
+                     double savedPeople,
+                     HurricaneNode otherCurrNode,
+                     double otherSavedPeople,
+                     int otherPeople) {
         super(prev, currNode, peopleInside, time, people, costSoFar);
-        this.savedPeople = savedPeople;
+        this.mineSavedPeople = savedPeople;
         this.otherCurrNode = otherCurrNode;
         this.otherSavedPeople = otherSavedPeople;
         this.otherPeople = otherPeople;

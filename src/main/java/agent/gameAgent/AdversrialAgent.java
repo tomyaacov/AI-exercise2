@@ -26,7 +26,7 @@ public class AdversrialAgent extends GameAgent {
     private AgentAction alphaBetaDecision(GameState gameState){
 
         GameSearchOutput optimal = maxValue(gameState, Double.MIN_VALUE, Double.MAX_VALUE, getContext().getCutoff());
-        return new AgentAction(optimal.getGameState(), op);
+        return new AgentAction(optimal.getGameState().getCurrNode(), optimal.getGameState().getTime());
     }
 
     private GameSearchOutput maxValue(GameState gameState, double alpha, double beta, int timeToCutoff){
@@ -41,14 +41,16 @@ public class AdversrialAgent extends GameAgent {
         List<GameState> expandState = expandState(gameState, true);
         for(GameState s: expandState){
             GameSearchOutput curr = minValue(s,alpha,beta,timeToCutoff-1);
-            v = Math.max(v, curr.getScore());
-            if(v >= curr.g)
+            if(v < curr.getScore()){
+                v = curr.getScore();
+                maxState = curr.getGameState();
+            }
             if (v >= beta){
-                return  new GameSearchOutput(s, v);
+                return  new GameSearchOutput(maxState, v);
             }
             alpha = Math.max(alpha,v);
         }
-        return new GameSearchOutput(gameState, v);
+        return new GameSearchOutput(maxState, v);
     }
 
     private GameSearchOutput minValue(GameState gameState, double alpha, double beta, int timeToCutoff){
@@ -63,12 +65,12 @@ public class AdversrialAgent extends GameAgent {
         List<GameState> expandState = expandState(gameState, false);
         for(GameState s: expandState){
             GameSearchOutput curr = maxValue(s,alpha,beta,timeToCutoff-1);
-            v = Math.min(v, curr.getScore());
-            if (v <= curr.getScore()){
+            if (v > curr.getScore()){
+                v = curr.getScore();
                 minState = curr.getGameState();
             }
             if (v <= alpha){
-                return new GameSearchOutput(s, v);
+                return new GameSearchOutput(minState, v);
             }
             beta = Math.min(beta,v);
         }
@@ -92,13 +94,7 @@ public class AdversrialAgent extends GameAgent {
         expandState.add(expandNoOp(gameState));
         return expandState;
     }
-
-
-
-
-    private AgentAction extractActionFromState(GameState gameState){
-        return null;
-    }
+    
 
 
 }

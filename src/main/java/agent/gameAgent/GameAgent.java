@@ -5,7 +5,6 @@ import config.HurricaneNode;
 import org.graphstream.graph.Edge;
 import simulator.SimulatorContext;
 import states.GameState;
-import states.State;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,9 +25,37 @@ public abstract class GameAgent extends Agent {
             } else {
                 peopleMap.put(node.getId(), 0);
             }
-            return null;
+            return new GameState(s,
+                    node,
+                    peopleMap,
+                    s.getTime() + calculateTraverseSearchOperation(currentEdge, s.getPeople()),
+                    node.isShelter() ? 0 : s.getPeople() + node.getPeople(),
+                    s.getCostSoFar(),
+                    node.isShelter() ? s.getMineSavedPeople() + s.getPeople() : s.getMineSavedPeople(),
+                    s.getOtherCurrNode(),
+                    s.getOtherSavedPeople(),
+                    s.getOtherPeople());
+        } else {
+            if (s.getTime() + calculateTraverseSearchOperation(currentEdge, s.getOtherPeople()) > context.getDeadline()){
+                return new GameState(s, s.getTime() + calculateTraverseSearchOperation(currentEdge, s.getOtherPeople()));
+            }
+            Map<String, Integer> peopleMap = new HashMap<>(s.getPeopleInNodes());
+            if (node.isShelter()) {
+                peopleMap.put(node.getId(), node.getPeople() + s.getOtherPeople());
+            } else {
+                peopleMap.put(node.getId(), 0);
+            }
+            return new GameState(s,
+                    s.getCurrNode(),
+                    peopleMap,
+                    s.getTime() + calculateTraverseSearchOperation(currentEdge, s.getOtherPeople()),
+                    s.getPeople(),
+                    s.getCostSoFar(),
+                    s.getMineSavedPeople(),
+                    node,
+                    node.isShelter() ? s.getOtherSavedPeople() + s.getOtherPeople() : s.getOtherSavedPeople(),
+                    node.isShelter() ? 0 : s.getOtherPeople() + node.getPeople());
         }
-        return null;
     }
 
     private double calculateTraverseSearchOperation(Edge e, int peopleInVehicle){
