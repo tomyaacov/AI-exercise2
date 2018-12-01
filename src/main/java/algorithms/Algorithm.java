@@ -2,6 +2,7 @@ package algorithms;
 
 import config.HurricaneGraph;
 import config.HurricaneNode;
+import states.GameState;
 import states.State;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
@@ -161,6 +162,23 @@ public class Algorithm {
             peopleInNodes.put(Integer.toString(i), checkedNode.getPeople());
         }
         return peopleInNodes;
+    }
+
+    public static double heuristicStaticEvaluation(GameState gameState){
+        State stateA = new State(gameState.getPrev(),
+                                    gameState.getCurrNode(),
+                                    new HashMap<>(gameState.getPeopleInNodes()),
+                                    gameState.getTime(),
+                                    gameState.getPeople(),
+                                    gameState.getCostSoFar());
+        State stateB = new State(gameState.getPrev(),
+                                    gameState.getOtherCurrNode(),
+                                    new HashMap<>(gameState.getPeopleInNodes()),
+                                    gameState.getTime(),
+                                    gameState.getOtherPeople(),
+                                    gameState.getOtherCostSoFar());
+
+        return (stateA.getCostSoFar() + heuristicFunction(stateA)/2) - (stateB.getCostSoFar() + heuristicFunction(stateB)/2);
     }
 
     public static void main(String[] args) throws Exception{
