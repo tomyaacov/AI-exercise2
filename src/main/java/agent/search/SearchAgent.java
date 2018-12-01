@@ -4,7 +4,7 @@ import agent.Agent;
 import agent.AgentAction;
 import config.HurricaneGraph;
 import config.HurricaneNode;
-import entities.State;
+import states.State;
 import lombok.Getter;
 import lombok.Setter;
 import org.graphstream.graph.Edge;

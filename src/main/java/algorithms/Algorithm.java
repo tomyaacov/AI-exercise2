@@ -2,7 +2,7 @@ package algorithms;
 
 import config.HurricaneGraph;
 import config.HurricaneNode;
-import entities.State;
+import states.State;
 import org.graphstream.graph.Edge;
 import org.graphstream.graph.Node;
 

@@ -1,7 +1,6 @@
 package agent.search;
 
-import agent.AgentAction;
-import entities.State;
+import states.State;
 import org.graphstream.graph.Edge;
 import simulator.SimulatorContext;
 

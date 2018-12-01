@@ -1,4 +1,4 @@
-package entities;
+package states;
 
 import algorithms.Algorithm;
 import config.HurricaneNode;
