@@ -34,7 +34,7 @@ public class SemiCooperativeAgent extends GameAgent{
 
     private AgentAction getDecision(GameState gameState){
 
-        GameSearchOutput optimal = maxAValue(gameState, getContext().getCutoff());
+        GameSearchOutputSemi optimal = maxAValue(gameState, getContext().getCutoff());
         context.getAgentStates().get(getId()).setPeopleInCar(optimal.getGameState().getPeople());
         context.getAgentStates().get(getId()).setPosition(optimal.getGameState().getCurrNode());
         context.getAgentStates().get(getId()).setSavedPeople(optimal.getGameState().getMineSavedPeople());
@@ -43,45 +43,47 @@ public class SemiCooperativeAgent extends GameAgent{
         return new AgentAction(optimal.getGameState().getCurrNode(), optimal.getGameState().getTime()- optimal.getGameState().getPrev().getTime());
     }
 
-    private GameSearchOutput maxAValue(GameState gameState, int timeToCutoff){
+    private GameSearchOutputSemi maxAValue(GameState gameState, int timeToCutoff){
         if (gameState.isGoalState()){
-            return new GameSearchOutput(gameState, gameState.getMineSavedPeople() - gameState.getOtherSavedPeople());
+            return new GameSearchOutputSemi(gameState, gameState.getMineSavedPeople(), gameState.getOtherSavedPeople());
         }
         if (timeToCutoff == 0){
-            return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState, context));
+            return Algorithm.semiHeuristicStaticEvaluation(gameState, context);
         }
         double v = -Double.MAX_VALUE;
+        double vb = -Double.MAX_VALUE;
         GameState maxState = null;
         List<GameState> expandState = expandState(gameState, true);
         for(GameState s: expandState){
-            GameSearchOutput curr = maxBValue(s,timeToCutoff-1);
-            if(v < curr.getScore()){
-                v = curr.getScore();
+            GameSearchOutputSemi curr = maxBValue(s,timeToCutoff-1);
+            if((v < curr.getAScore()) || (v == curr.getAScore() && vb < curr.getBScore())){
+                v = curr.getAScore();
+                vb = curr.getBScore();
                 maxState = s;
             }
         }
-        return new GameSearchOutput(maxState, v);
+        return new GameSearchOutputSemi(maxState, v, vb);
     }
 
-    private GameSearchOutput maxBValue(GameState gameState, int timeToCutoff){
+    private GameSearchOutputSemi maxBValue(GameState gameState, int timeToCutoff){
         if (gameState.isGoalState()){
-            return new GameSearchOutput(gameState, gameState.getMineSavedPeople() - gameState.getOtherSavedPeople());
+            return new GameSearchOutputSemi(gameState, gameState.getMineSavedPeople(), gameState.getOtherSavedPeople());
         }
         if (timeToCutoff == 0){
-            return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState, context));
+            return Algorithm.semiHeuristicStaticEvaluation(gameState, context);
         }
         double v = -Double.MAX_VALUE;
+        double vb = -Double.MAX_VALUE;
         GameState maxState = null;
         List<GameState> expandState = expandState(gameState, true);
         for(GameState s: expandState){
-            GameSearchOutput curr = maxAValue(s, timeToCutoff-1);
-            if(v < curr.getScore()){
-                v = curr.getScore();
+            GameSearchOutputSemi curr = maxAValue(s, timeToCutoff-1);
+            if((vb < curr.getBScore()) || (vb == curr.getBScore() && v < curr.getAScore())){
+                v = curr.getAScore();
+                vb = curr.getBScore();
                 maxState = s;
             }
         }
-        return new GameSearchOutput(maxState, v);
+        return new GameSearchOutputSemi(maxState, v, vb);
     }
-
-    
 }

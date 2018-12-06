@@ -1,5 +1,6 @@
 package algorithms;
 
+import agent.gameAgent.GameSearchOutputSemi;
 import config.HurricaneGraph;
 import config.HurricaneNode;
 import states.GameState;
@@ -183,6 +184,17 @@ public class Algorithm {
         double possibleSavedPeopleA = remainPeopleToSave - (gameHeuristicFunction(stateA,stateB));
         double possibleSavedPeopleB = remainPeopleToSave - (gameHeuristicFunction(stateB,stateA));
         return (gameState.getMineSavedPeople() + possibleSavedPeopleA/2) + (gameState.getOtherSavedPeople() + (possibleSavedPeopleB)/2);
+    }
+
+    public static GameSearchOutputSemi semiHeuristicStaticEvaluation(GameState gameState, SimulatorContext context){
+        State stateA = getStateA(gameState);
+        State stateB = getStateB(gameState);
+
+        double remainPeopleToSave = getRemainPeopleToSave(gameState, context);
+        double possibleSavedPeopleA = remainPeopleToSave - (gameHeuristicFunction(stateA,stateB));
+        double possibleSavedPeopleB = remainPeopleToSave - (gameHeuristicFunction(stateB,stateA));
+        return new GameSearchOutputSemi(gameState, gameState.getMineSavedPeople() + possibleSavedPeopleA/2,
+                gameState.getOtherSavedPeople() + possibleSavedPeopleB/2);
     }
 
     private static State getStateB(GameState gameState) {
