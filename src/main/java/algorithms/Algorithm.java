@@ -166,32 +166,54 @@ public class Algorithm {
     }
 
     public static double heuristicStaticEvaluation(GameState gameState, SimulatorContext context){
-        State stateA = new State(gameState.getPrev(),
-                                    gameState.getCurrNode(),
-                                    new HashMap<>(gameState.getPeopleInNodes()),
-                                    gameState.getTime(),
-                                    gameState.getPeople(),
-                                    gameState.getMineSavedPeople());
-        State stateB = new State(gameState.getPrev(),
-                                    gameState.getOtherCurrNode(),
-                                    new HashMap<>(gameState.getPeopleInNodes()),
-                                    gameState.getTime(),
-                                    gameState.getOtherPeople(),
-                                    gameState.getOtherSavedPeople());
+        State stateA = getStateA(gameState);
+        State stateB = getStateB(gameState);
 
-        double remainPeopleToSave = gameState.getPeopleInNodes().entrySet().stream()
-                .filter(node->  {
-                    HurricaneNode curr =context.getGraph().getNode(node.getKey());
-                    return ! curr.isShelter();
-                })
-                .mapToInt(node->  {
-                    HurricaneNode curr =context.getGraph().getNode(node.getKey());
-                    return curr.getPeople();
-                })
-                .sum();
-                double possibleSavedPeopleA = remainPeopleToSave - (gameHeuristicFunction(stateA,stateB));
-                double possibleSavedPeopleB = remainPeopleToSave - (gameHeuristicFunction(stateB,stateA));
+        double remainPeopleToSave = getRemainPeopleToSave(gameState, context);
+        double possibleSavedPeopleA = remainPeopleToSave - (gameHeuristicFunction(stateA,stateB));
+        double possibleSavedPeopleB = remainPeopleToSave - (gameHeuristicFunction(stateB,stateA));
         return (gameState.getMineSavedPeople() + possibleSavedPeopleA/2) - (gameState.getOtherSavedPeople() + (possibleSavedPeopleB)/2);
+    }
+
+    public static double coopertativeHeuristicStaticEvaluation(GameState gameState, SimulatorContext context){
+        State stateA = getStateA(gameState);
+        State stateB = getStateB(gameState);
+
+        double remainPeopleToSave = getRemainPeopleToSave(gameState, context);
+        double possibleSavedPeopleA = remainPeopleToSave - (gameHeuristicFunction(stateA,stateB));
+        double possibleSavedPeopleB = remainPeopleToSave - (gameHeuristicFunction(stateB,stateA));
+        return (gameState.getMineSavedPeople() + possibleSavedPeopleA/2) + (gameState.getOtherSavedPeople() + (possibleSavedPeopleB)/2);
+    }
+
+    private static State getStateB(GameState gameState) {
+        return new State(gameState.getPrev(),
+                                        gameState.getOtherCurrNode(),
+                                        new HashMap<>(gameState.getPeopleInNodes()),
+                                        gameState.getTime(),
+                                        gameState.getOtherPeople(),
+                                        gameState.getOtherSavedPeople());
+    }
+
+    private static State getStateA(GameState gameState) {
+        return new State(gameState.getPrev(),
+                                        gameState.getCurrNode(),
+                                        new HashMap<>(gameState.getPeopleInNodes()),
+                                        gameState.getTime(),
+                                        gameState.getPeople(),
+                                        gameState.getMineSavedPeople());
+    }
+
+    private static double getRemainPeopleToSave(GameState gameState, SimulatorContext context) {
+        return (double) gameState.getPeopleInNodes().entrySet().stream()
+                    .filter(node->  {
+                        HurricaneNode curr =context.getGraph().getNode(node.getKey());
+                        return ! curr.isShelter();
+                    })
+                    .mapToInt(node->  {
+                        HurricaneNode curr =context.getGraph().getNode(node.getKey());
+                        return curr.getPeople();
+                    })
+                    .sum();
     }
 
 

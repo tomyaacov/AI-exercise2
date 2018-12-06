@@ -92,23 +92,5 @@ public class AdversrialAgent extends GameAgent {
     }
 
 
-    private List<GameState> expandState(GameState gameState, boolean isA) {
-        List<GameState> expandState = new LinkedList<>();
-        HurricaneNode expandFrom;
-        expandFrom = isA ? gameState.getCurrNode() : gameState.getOtherCurrNode();
-
-        Iterator<Edge> it = expandFrom.getEdgeIterator();
-        while (it.hasNext()) {
-            Edge currentEdge = it.next();
-            if (!HurricaneGraph.isEdgeBlock(currentEdge)) {
-                HurricaneNode node = currentEdge.getOpposite(expandFrom);
-                expandState.add(constructNewState(gameState, currentEdge, node, isA));
-            }
-        }
-        expandState.add(expandNoOp(gameState));
-        return expandState;
-    }
-
-
 
 }
