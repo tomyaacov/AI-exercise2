@@ -26,13 +26,21 @@ public class AdversrialAgent extends GameAgent {
                                             getContext().getAgentStates().get(otherId).getPosition(),
                                             getContext().getAgentStates().get(otherId).getSavedPeople(),
                                             getContext().getAgentStates().get(otherId).getPeopleInCar());
-        return alphaBetaDecision(gameState);
+        AgentAction action = alphaBetaDecision(gameState);
+        setCurrNode(action.getCurrNode());
+
+        return action;
     }
 
     private AgentAction alphaBetaDecision(GameState gameState){
 
         GameSearchOutput optimal = maxValue(gameState, Double.MIN_VALUE, Double.MAX_VALUE, getContext().getCutoff());
-        return new AgentAction(optimal.getGameState().getCurrNode(), optimal.getGameState().getTime());
+        context.getAgentStates().get(getId()).setPeopleInCar(optimal.getGameState().getPeople());
+        context.getAgentStates().get(getId()).setPosition(optimal.getGameState().getCurrNode());
+        context.getAgentStates().get(getId()).setSavedPeople(optimal.getGameState().getMineSavedPeople());
+
+
+        return new AgentAction(optimal.getGameState().getCurrNode(), optimal.getGameState().getTime()- optimal.getGameState().getPrev().getTime());
     }
 
     private GameSearchOutput maxValue(GameState gameState, double alpha, double beta, int timeToCutoff){
@@ -40,7 +48,7 @@ public class AdversrialAgent extends GameAgent {
             return new GameSearchOutput(gameState, gameState.getCostSoFar() - gameState.getOtherSavedPeople());
         }
         if (timeToCutoff == 0){
-            return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState));
+            return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState, context));
         }
         double v = -Double.MAX_VALUE;
         GameState maxState = null;
@@ -64,7 +72,7 @@ public class AdversrialAgent extends GameAgent {
             return new GameSearchOutput(gameState, gameState.getCostSoFar() - gameState.getOtherSavedPeople());
         }
         if (timeToCutoff == 0){
-            return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState));
+            return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState,context));
         }
         Double v = Double.MAX_VALUE;
         GameState minState = null;
