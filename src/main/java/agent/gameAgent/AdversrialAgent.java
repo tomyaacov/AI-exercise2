@@ -45,7 +45,7 @@ public class AdversrialAgent extends GameAgent {
 
     private GameSearchOutput maxValue(GameState gameState, double alpha, double beta, int timeToCutoff){
         if (gameState.isGoalState()){
-            return new GameSearchOutput(gameState, gameState.getCostSoFar() - gameState.getOtherSavedPeople());
+            return new GameSearchOutput(gameState, gameState.getMineSavedPeople() - gameState.getOtherSavedPeople());
         }
         if (timeToCutoff == 0){
             return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState, context));
@@ -69,7 +69,7 @@ public class AdversrialAgent extends GameAgent {
 
     private GameSearchOutput minValue(GameState gameState, double alpha, double beta, int timeToCutoff){
         if (gameState.isGoalState()){
-            return new GameSearchOutput(gameState, gameState.getCostSoFar() - gameState.getOtherSavedPeople());
+            return new GameSearchOutput(gameState, gameState.getMineSavedPeople() - gameState.getOtherSavedPeople());
         }
         if (timeToCutoff == 0){
             return new GameSearchOutput(gameState, Algorithm.heuristicStaticEvaluation(gameState,context));
