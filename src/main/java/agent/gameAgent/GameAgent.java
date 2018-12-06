@@ -1,6 +1,7 @@
 package agent.gameAgent;
 
 import agent.Agent;
+import config.HurricaneGraph;
 import config.HurricaneNode;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,8 +10,7 @@ import simulator.SimulatorContext;
 import states.AgentState;
 import states.GameState;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class GameAgent extends Agent {
 
@@ -30,7 +30,23 @@ public abstract class GameAgent extends Agent {
             getCurrNode().setPeople(0);
             state.setPeopleInCar(getPeople());
         }
+    }
 
+    protected List<GameState> expandState(GameState gameState, boolean isA) {
+        List<GameState> expandState = new LinkedList<>();
+        HurricaneNode expandFrom;
+        expandFrom = isA ? gameState.getCurrNode() : gameState.getOtherCurrNode();
+
+        Iterator<Edge> it = expandFrom.getEdgeIterator();
+        while (it.hasNext()) {
+            Edge currentEdge = it.next();
+            if (!HurricaneGraph.isEdgeBlock(currentEdge)) {
+                HurricaneNode node = currentEdge.getOpposite(expandFrom);
+                expandState.add(constructNewState(gameState, currentEdge, node, isA));
+            }
+        }
+        expandState.add(expandNoOp(gameState));
+        return expandState;
     }
 
     protected GameState constructNewState(GameState s, Edge currentEdge, HurricaneNode node, boolean isA) {
