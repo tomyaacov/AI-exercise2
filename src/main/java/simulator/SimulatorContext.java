@@ -1,10 +1,10 @@
 package simulator;
 
 import config.HurricaneGraph;
-import entities.GameType;
 import lombok.Getter;
 import lombok.Setter;
 import states.AgentState;
+import states.GameType;
 
 import java.util.ArrayList;
 import java.util.List;

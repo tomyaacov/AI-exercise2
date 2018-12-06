@@ -3,6 +3,7 @@ package agent.gameAgent;
 import agent.Agent;
 import agent.HumanAgent;
 import simulator.SimulatorContext;
+import states.GameType;
 
 public class GameAgentFactory {
 
@@ -18,7 +19,14 @@ public class GameAgentFactory {
             case 1:
                 return new GameHumanAgent(context);
             case 2:
-                return new AdversrialAgent(context);
+                switch (context.getGameType()){
+                    case ADVERSARIAL:
+                        return new AdversrialAgent(context);
+                    case SEMI_COOPERATIVE:
+                        return new SemiCooperativeAgent(context);
+                    case FULLY_COOPERATIVE:
+                        return new FullCooperativeAgent(context);
+                }
             default:
                 return null;
         }

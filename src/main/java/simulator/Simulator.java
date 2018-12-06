@@ -2,16 +2,15 @@ package simulator;
 
 import agent.Agent;
 import agent.AgentAction;
-import agent.AgentFactory;
 import agent.gameAgent.GameAgentFactory;
 import agent.search.SearchAgent;
 import config.HurricaneNode;
-import entities.GameType;
 import lombok.Getter;
 import lombok.Setter;
 import org.graphstream.ui.view.Viewer;
 import parser.Parser;
 import states.AgentState;
+import states.GameType;
 
 import java.io.File;
 import java.io.IOException;
