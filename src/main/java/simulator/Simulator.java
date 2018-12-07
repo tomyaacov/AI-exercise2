@@ -2,6 +2,7 @@ package simulator;
 
 import agent.Agent;
 import agent.AgentAction;
+import agent.gameAgent.GameAgent;
 import agent.gameAgent.GameAgentFactory;
 import agent.search.SearchAgent;
 import config.HurricaneNode;
@@ -43,7 +44,7 @@ public class Simulator {
     }
 
     private void wrapUp() {
-        PressToSeeNextMove("Simulation over. press to see agents performance measure");
+        PressToSeeNextMove("Simulation over. press to see agents scores");
         printPerformanceMeasure();
     }
 
@@ -60,7 +61,14 @@ public class Simulator {
             context.setTime(context.getTime() + action.getTime());
             agent.doActionInNode();
             setAgentState(i, agent, context.getTime());
-            PressToSeeNextMove("press to continue");
+            String agentState = "agent " + (i+1) + "is in node " + agent.getCurrNode().getId() + "; time is: "
+                    +context.getTime() + "; deadline: " + context.getDeadline() + "; agent have " +
+                    agent.getPeople() + " people in vehicle";
+            if (context.getDeadline() < context.getTime()){
+                agentState = "Operation failed - " + agentState;
+            }
+            System.out.println(agentState);
+            //PressToSeeNextMove("press to continue");
             i = updateI(i);
         }
         if (isGoalAchieved()){
@@ -91,8 +99,8 @@ public class Simulator {
     private void printPerformanceMeasure() {
         for (int i = 0; i < agents.size(); i++ ){
             Agent agent = agents.get(i);
-            if(agent instanceof SearchAgent){
-                System.out.println("Agent " + (i+1) + " performance measure is " + ((SearchAgent) agent).calculatePerformanceMeasure());
+            if(agent instanceof GameAgent){
+                System.out.println("Agent " + (i+1) + " score is " + context.getAgentStates().get(i).getSavedPeople());
             }
         }
     }
@@ -195,7 +203,7 @@ public class Simulator {
 
     private SimulatorContext initializeGraph() {
         try {
-            return parser.parseFile("src.main.resources.graph".replace(".", File.separator));
+            return parser.parseFile("src.main.resources.graph_2".replace(".", File.separator));//TODO: change back to graph
         } catch (IOException e) {
             System.err.println("parsing 'graph.txt' file encountered a problem. Check for valid input");
             System.exit(1);
