@@ -30,7 +30,7 @@ E 1 2 W4                 ; Edge from vertex 1 to vertex 2, weight 4<br>
 E 2 4 W1                 ; Edge from vertex 2 to vertex 4, weight 1<br>
 E 4 3 W1                 ; Edge from vertex 4 to vertex 3, weight 1<br>
 E 1 3 W1                 ; Edge from vertex 1 to vertex 3, weight 1<br>
-E 1 5 W2                 ; Edge from vertex 1 to vertex 5, weight 1<br>
+E 1 5 W1                 ; Edge from vertex 1 to vertex 5, weight 1<br>
 <br>
 V 4 P 3                  ; Vertex 4 initially contains 3 person to be rescued<br>
 V 1 S                    ; Vertex 1 contains a hurricane shelter<br>
@@ -74,11 +74,11 @@ Agent 1 initial position is node 2<br>
 Agent 2 initial position is node 1<br>
 <br>
 agent 1is in node 4; time is: 1.0; deadline: 5; agent have 3 people in vehicle<br>
-agent 2is in node 1; time is: 2.0; deadline: 5; agent have 0 people in vehicle<br>
+agent 2is in node 5; time is: 2.0; deadline: 5; agent have 1 people in vehicle<br>
 agent 1is in node 3; time is: 3.0; deadline: 5; agent have 5 people in vehicle<br>
 agent 2is in node 1; time is: 4.0; deadline: 5; agent have 0 people in vehicle<br>
 agent 1is in node 1; time is: 5.0; deadline: 5; agent have 0 people in vehicle<br>
 Simulation over. press to see agents scores<br>
 <br>
 Agent 1 score is 5<br>
-Agent 2 score is 0<br>
+Agent 2 score is 1<br>

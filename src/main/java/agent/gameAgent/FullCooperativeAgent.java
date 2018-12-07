@@ -28,7 +28,7 @@ public class FullCooperativeAgent extends GameAgent {
     }
 
     private AgentAction maxSumSavedPeople(GameState gameState) {
-        GameSearchOutput optimal = maxValue(gameState, getId()==0, getContext().getCutoff());
+        GameSearchOutput optimal = maxValue(gameState, true, getContext().getCutoff());
         context.getAgentStates().get(getId()).setPeopleInCar(optimal.getGameState().getPeople());
         context.getAgentStates().get(getId()).setPosition(optimal.getGameState().getCurrNode());
         context.getAgentStates().get(getId()).setSavedPeople(optimal.getGameState().getMineSavedPeople());

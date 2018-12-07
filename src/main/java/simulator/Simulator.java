@@ -203,7 +203,7 @@ public class Simulator {
 
     private SimulatorContext initializeGraph() {
         try {
-            return parser.parseFile("src.main.resources.graph_2".replace(".", File.separator));//TODO: change back to graph
+            return parser.parseFile("src.main.resources.graph".replace(".", File.separator));
         } catch (IOException e) {
             System.err.println("parsing 'graph.txt' file encountered a problem. Check for valid input");
             System.exit(1);
