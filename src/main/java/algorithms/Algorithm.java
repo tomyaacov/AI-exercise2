@@ -119,7 +119,7 @@ public class Algorithm {
         if(minDistToShelter > simulatorContext.getDeadline()-state.getTime()){
             dead += state.getPeople();
         }
-        return 100*dead;
+        return dead;
     }
 
     private static Map<String, Integer> getUpdatedPeopleInNodesMap(State state, DijkstraOutput wayForNodeWithPeople, HurricaneNode currNode) {
@@ -170,9 +170,9 @@ public class Algorithm {
         State stateA = getStateA(gameState);
         State stateB = getStateB(gameState);
 
-        double remainPeopleToSave = getRemainPeopleToSave(gameState, context);
-        double possibleSavedPeopleA = remainPeopleToSave - (gameHeuristicFunction(stateA,stateB));
-        double possibleSavedPeopleB = remainPeopleToSave - (gameHeuristicFunction(stateB,stateA));
+        double remainPeopleToSave = getRemainedPeopleToSave(gameState, context);
+        double possibleSavedPeopleA = remainPeopleToSave + stateA.getPeople() - heuristicFunction(stateA);
+        double possibleSavedPeopleB = remainPeopleToSave + stateB.getPeople() - heuristicFunction(stateB);
         return (gameState.getMineSavedPeople() + possibleSavedPeopleA/2) - (gameState.getOtherSavedPeople() + (possibleSavedPeopleB)/2);
     }
 
@@ -180,9 +180,9 @@ public class Algorithm {
         State stateA = getStateA(gameState);
         State stateB = getStateB(gameState);
 
-        double remainPeopleToSave = getRemainPeopleToSave(gameState, context);
-        double possibleSavedPeopleA = remainPeopleToSave - (gameHeuristicFunction(stateA,stateB));
-        double possibleSavedPeopleB = remainPeopleToSave - (gameHeuristicFunction(stateB,stateA));
+        double remainPeopleToSave = getRemainedPeopleToSave(gameState, context);
+        double possibleSavedPeopleA = remainPeopleToSave + stateA.getPeople() - heuristicFunction(stateA);
+        double possibleSavedPeopleB = remainPeopleToSave + stateB.getPeople() - heuristicFunction(stateB);
         return (gameState.getMineSavedPeople() + possibleSavedPeopleA/2) + (gameState.getOtherSavedPeople() + (possibleSavedPeopleB)/2);
     }
 
@@ -190,9 +190,9 @@ public class Algorithm {
         State stateA = getStateA(gameState);
         State stateB = getStateB(gameState);
 
-        double remainPeopleToSave = getRemainPeopleToSave(gameState, context);
-        double possibleSavedPeopleA = remainPeopleToSave - (gameHeuristicFunction(stateA,stateB));
-        double possibleSavedPeopleB = remainPeopleToSave - (gameHeuristicFunction(stateB,stateA));
+        double remainPeopleToSave = getRemainedPeopleToSave(gameState, context);
+        double possibleSavedPeopleA = remainPeopleToSave + stateA.getPeople() - heuristicFunction(stateA);
+        double possibleSavedPeopleB = remainPeopleToSave + stateB.getPeople() - heuristicFunction(stateB);
         return new GameSearchOutputSemi(gameState, gameState.getMineSavedPeople() + possibleSavedPeopleA/2,
                 gameState.getOtherSavedPeople() + possibleSavedPeopleB/2);
     }
@@ -215,56 +215,67 @@ public class Algorithm {
                                         gameState.getMineSavedPeople());
     }
 
-    private static double getRemainPeopleToSave(GameState gameState, SimulatorContext context) {
-        return (double) gameState.getPeopleInNodes().entrySet().stream()
-                    .filter(node->  {
-                        HurricaneNode curr =context.getGraph().getNode(node.getKey());
-                        return ! curr.isShelter();
-                    })
-                    .mapToInt(node->  {
-                        HurricaneNode curr =context.getGraph().getNode(node.getKey());
-                        return curr.getPeople();
-                    })
-                    .sum();
-    }
+//    private static double getRemainPeopleToSave(GameState gameState, SimulatorContext context) {
+//        return (double) gameState.getPeopleInNodes().entrySet().stream()
+//                    .filter(node->  {
+//                        HurricaneNode curr =context.getGraph().getNode(node.getKey());
+//                        return ! curr.isShelter();
+//                    })
+//                    .mapToInt(node->  {
+//                        HurricaneNode curr =context.getGraph().getNode(node.getKey());
+//                        return curr.getPeople();
+//                    })
+//                    .sum();
+//    }
 
-
-    public static double gameHeuristicFunction(State myState, State otherState){
-        int dead = 0;
-        SimulatorContext simulatorContext = Simulator.getContext();
-        DijkstraOutput wayForNodeWithPeople = dijkstra(simulatorContext,
-                myState.getPeopleInNodes(),
-                myState.getCurrNode(),
-                myState.getPeople());
-        for(int i = 1; i<=simulatorContext.getGraph().getNodeCount(); i++){
-            HurricaneNode currNode = simulatorContext.getGraph().getNode(String.valueOf(i));
-            if(!currNode.isShelter() && myState.getPeopleInNodes().get(String.valueOf(i)) > 0){
-                Map<String, Integer> wayForShelterPeopleInNode = getUpdatedPeopleInNodesMap(myState, wayForNodeWithPeople, currNode);
-
-                DijkstraOutput wayForShelter = dijkstra(simulatorContext, wayForShelterPeopleInNode, currNode, wayForShelterPeopleInNode.get(currNode.getId()));
-
-                double minDistToShelter = getDistToClosestShelter(simulatorContext, wayForShelter);
-
-                if(wayForNodeWithPeople.getDist().get(i) + minDistToShelter > simulatorContext.getDeadline()-myState.getTime()){
-                    dead += myState.getPeopleInNodes().get(currNode.getId());
-                }
+    private static double getRemainedPeopleToSave(GameState gameState, SimulatorContext context) {
+        int sum = 0;
+        for (Map.Entry<String, Integer> entry : gameState.getPeopleInNodes().entrySet()) {
+            HurricaneNode curr =context.getGraph().getNode(entry.getKey());
+            if (!curr.isShelter()){
+                sum += gameState.getPeopleInNodes().get(entry.getKey());
             }
         }
-        double minDistToShelter = getDistToClosestShelter(simulatorContext, wayForNodeWithPeople);
-        if(minDistToShelter > simulatorContext.getDeadline()-myState.getTime()){
-            dead += myState.getPeople();
-        }
-
-        DijkstraOutput otherWayForNodeWithPeople = dijkstra(simulatorContext,
-                otherState.getPeopleInNodes(),
-                otherState.getCurrNode(),
-                otherState.getPeople());
-        double otherMinDistToShelter = getDistToClosestShelter(simulatorContext, otherWayForNodeWithPeople);
-        if(otherMinDistToShelter <= simulatorContext.getDeadline()-otherState.getTime()){
-            dead += otherState.getPeople();
-        }
-        return dead;
+        return sum;
     }
+
+
+//    public static double gameHeuristicFunction(State myState, State otherState){
+//        int dead = 0;
+//        SimulatorContext simulatorContext = Simulator.getContext();
+//        DijkstraOutput wayForNodeWithPeople = dijkstra(simulatorContext,
+//                myState.getPeopleInNodes(),
+//                myState.getCurrNode(),
+//                myState.getPeople());
+//        for(int i = 1; i<=simulatorContext.getGraph().getNodeCount(); i++){
+//            HurricaneNode currNode = simulatorContext.getGraph().getNode(String.valueOf(i));
+//            if(!currNode.isShelter() && myState.getPeopleInNodes().get(String.valueOf(i)) > 0){
+//                Map<String, Integer> wayForShelterPeopleInNode = getUpdatedPeopleInNodesMap(myState, wayForNodeWithPeople, currNode);
+//
+//                DijkstraOutput wayForShelter = dijkstra(simulatorContext, wayForShelterPeopleInNode, currNode, wayForShelterPeopleInNode.get(currNode.getId()));
+//
+//                double minDistToShelter = getDistToClosestShelter(simulatorContext, wayForShelter);
+//
+//                if(wayForNodeWithPeople.getDist().get(i) + minDistToShelter > simulatorContext.getDeadline()-myState.getTime()){
+//                    dead += myState.getPeopleInNodes().get(currNode.getId());
+//                }
+//            }
+//        }
+//        double minDistToShelter = getDistToClosestShelter(simulatorContext, wayForNodeWithPeople);
+//        if(minDistToShelter > simulatorContext.getDeadline()-myState.getTime()){
+//            dead += myState.getPeople();
+//        }
+//
+//        DijkstraOutput otherWayForNodeWithPeople = dijkstra(simulatorContext,
+//                otherState.getPeopleInNodes(),
+//                otherState.getCurrNode(),
+//                otherState.getPeople());
+//        double otherMinDistToShelter = getDistToClosestShelter(simulatorContext, otherWayForNodeWithPeople);
+//        if(otherMinDistToShelter <= simulatorContext.getDeadline()-otherState.getTime()){
+//            dead += otherState.getPeople();
+//        }
+//        return dead;
+//    }
 
     public static void main(String[] args) throws Exception{
         Parser parser = new Parser();
