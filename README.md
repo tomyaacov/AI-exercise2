@@ -13,8 +13,9 @@ We used GraphStream open source package for graph representaion.
 | Game type | Heuristic Evaluation Function |
 | :---: | :---: |
 | Adversarial (zero sum) | (SavedA + possibleSavedA/2) - (SavedB + possibleSavedB/2) |
-| Semi-Cooperative | (SavedA + possibleSavedA/2) ; (SavedA + possibleSavedA/2) (Sorting is made by first, ties breaken by second)|
+| Semi-Cooperative | (SavedA + possibleSavedA/2) ; (SavedA + possibleSavedA/2) (Sorting is made by first, ties breaken by second) |
 | Fully Cooperative | (SavedA + possibleSavedA/2) + (SavedB + possibleSavedB/2) |
+
 <br>
 Rational:<br>
 In the adversarial game, each agent tries to maximize the difference between the people he saves and the people the other agent saves. Therefore the hueristic tries to estimate this difference.<br>
