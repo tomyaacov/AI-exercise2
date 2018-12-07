@@ -34,7 +34,7 @@ public class AdversrialAgent extends GameAgent {
 
     private AgentAction alphaBetaDecision(GameState gameState){
 
-        GameSearchOutput optimal = maxValue(gameState, Double.MIN_VALUE, Double.MAX_VALUE, getContext().getCutoff());
+        GameSearchOutput optimal = maxValue(gameState, -Double.MAX_VALUE, Double.MAX_VALUE, getContext().getCutoff());
         context.getAgentStates().get(getId()).setPeopleInCar(optimal.getGameState().getPeople());
         context.getAgentStates().get(getId()).setPosition(optimal.getGameState().getCurrNode());
         context.getAgentStates().get(getId()).setSavedPeople(optimal.getGameState().getMineSavedPeople());
