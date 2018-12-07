@@ -1,6 +1,6 @@
-# Introduction to Artificial Intelligence - Assignment 2!
-Avi Rosen 303079511<br>
-Tom Yaacov 305578239<br>
+# Introduction to Artificial Intelligence - Assignment 2
+##### Avi Rosen 303079511<br>
+##### Tom Yaacov 305578239<br>
 <br>
 The assignment is written in java as a maven project.
 <br>
@@ -8,18 +8,24 @@ The assignment is written in java as a maven project.
 We used GraphStream open source package for graph representaion.
 <br><br>
 
-The heuristic we chose is:<br>
-100*(number of people we cant save)<br>
-We compute it in the following manner:<br>
+##### <u>The heuristic functions we chose are:</u><br>
+
+| Game type | Heuristic Evaluation Function |
+| :---: | :---: |
+| Adversarial (zero sum) | (SavedA + possibleSavedA/2) - (SavedB + possibleSavedB/2) |
+| Semi-Cooperative | (SavedA + possibleSavedA/2) ; (SavedA + possibleSavedA/2) (Sorting is made by first, ties breaken by second)|
+| Fully Cooperative | (SavedA + possibleSavedA/2) + (SavedB + possibleSavedB/2) |
 <br>
-for each node n with people (that isn't a shelter):<br>
-1. calculate the minimum distance from current node to n using dijkstra.<br>
-2. calculate the minimum distance from n to closest shelter, given an updated graph representation (considering the path we talk at step 1) using dijkstra.
 
-Comparing the performance of the three agents given k=1, start=V1 we got the following results:<br>
+##### <u>Example Scenario:</u>
+The following example illustrates a scenario where the optimal behavior differs for the 3 kinds of games:
+ # Example description
+ 
+##### <u>Adversarial (zero sum) output:</u>
+# Output...
+ 
+##### <u>Semi-Cooperative output:</u>
+# Output...
 
-| f | -1 | -100 | -10000 |
-| :---: | :---: | :---: | :---: |
-| Greedy | 8 | -91 | -9991 |
-| A* | 11 | -88 | -9988 |
-| RTA*(2) | 5 | -94 | -9994 |
+##### <u>Fully Cooperative output:</u>
+# Output...
