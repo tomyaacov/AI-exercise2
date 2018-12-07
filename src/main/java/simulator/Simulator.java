@@ -61,14 +61,14 @@ public class Simulator {
             context.setTime(context.getTime() + action.getTime());
             agent.doActionInNode();
             setAgentState(i, agent, context.getTime());
-            String agentState = "agent " + (i+1) + "is in node " + agent.getCurrNode().getId() + "; time is: "
-                    +context.getTime() + "; deadline: " + context.getDeadline() + "; agent have " +
-                    agent.getPeople() + " people in vehicle";
-            if (context.getDeadline() < context.getTime()){
-                agentState = "Operation failed - " + agentState;
-            }
-            System.out.println(agentState);
-            //PressToSeeNextMove("press to continue");
+//            String agentState = "agent " + (i+1) + "is in node " + agent.getCurrNode().getId() + "; time is: "
+//                    +context.getTime() + "; deadline: " + context.getDeadline() + "; agent have " +
+//                    agent.getPeople() + " people in vehicle";
+//            if (context.getDeadline() < context.getTime()){
+//                agentState = "Operation failed - " + agentState;
+//            }
+//            System.out.println(agentState);
+            PressToSeeNextMove("press to continue");
             i = updateI(i);
         }
         if (isGoalAchieved()){
