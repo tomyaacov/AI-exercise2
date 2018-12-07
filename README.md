@@ -16,6 +16,10 @@ We used GraphStream open source package for graph representaion.
 | Semi-Cooperative | (SavedA + possibleSavedA/2) ; (SavedA + possibleSavedA/2) (Sorting is made by first, ties breaken by second)|
 | Fully Cooperative | (SavedA + possibleSavedA/2) + (SavedB + possibleSavedB/2) |
 <br>
+Rational:<br>
+In the adversarial game, each agent tries to maximize the difference between the people he saves and the people the other agent saves. Therefore the hueristic tries to estimate this difference.<br>
+In semi-cooperative game, each agent tries to maximize its own score. The agent disregards the other agent score, except that ties are broken cooperatively. Therefore the hueristic estimates the people each agent can save separately and the algorithm sorts by the agent's score first, while ties are breaken by the second agent estimation<br>
+In fully cooperative game, both agents aim to maximize the sum of their scores. Therefore the heuristic tries to estimate the sum of scores the 2 agents can save.
 
 ##### <u>Example Scenario:</u>
 The following example illustrates a scenario where the optimal behavior differs for the 3 kinds of games:<br>
